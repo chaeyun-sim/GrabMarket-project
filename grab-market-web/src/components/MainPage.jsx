@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const MainPage = () => {
     const [products, setProducts] = useState([]);
-    const url = 'https://341cf269-c712-4751-a587-2c7fd1b972ec.mock.pstmn.io/products';
+    const url = 'http://localhost:8080/products';
     useEffect(() => {
         axios.get(url).then((result) => {
             const data = result.data.products;
