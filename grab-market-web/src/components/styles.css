@@ -27,7 +27,8 @@
 
 #body {
     /* height: 100% ; */
-    height: 1000px;
+    /* height: 1000px; */
+    height: 100vh;
     /* background-color: blue; */
     width: 1024px;
     margin: 0 auto;
@@ -101,4 +102,13 @@
 
 .product-avatar {
     width: 24px;
+}
+
+.product-link {
+    text-decoration: none;
+    color: rgb(110, 110, 110);
+}
+
+.product-link:hover {
+    color: inherit
 }
