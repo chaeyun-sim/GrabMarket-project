@@ -19,26 +19,17 @@ const MainPage = () => {
 
     return (
         <div>
-            <div id="header">
-                <div id="header-area">
-                    <img src="images/icons/logo.png" alt="logo" />
-                </div>
+            <div id="banner">
+                <img src="images/banners/banner1.png" alt="banner" />
             </div>
-            <div id="body">
-                <div id="banner">
-                    <img src="images/banners/banner1.png" alt="banner" />
-                </div>
-                <h1>판매되는 상품들</h1>
-                <div id="product-list">
-                        {products.map((product) => {
-                            return (
-                                <ProductsList items={product} key={product.id} />
-                            )
-                        })
-                    }
-                </div>
+            <h1>판매되는 상품들</h1>
+            <div id="product-list">
+                {products.map((product) => {
+                    return (
+                        <ProductsList items={product} key={product.id} />
+                    )}
+                )}
             </div>
-            <div id="footer"></div>
         </div>
     )
 }
