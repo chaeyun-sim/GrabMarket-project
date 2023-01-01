@@ -3,10 +3,11 @@ import './styles.css';
 import axios from "axios";
 import ProductsList from "./ProductsList";
 import { useEffect } from "react";
+import { API_URL } from "../config/constants.js"
 
 const MainPage = () => {
     const [products, setProducts] = useState([]);
-    const url = 'http://localhost:8080/products';
+    const url = (`${API_URL}/products`);
     useEffect(() => {
         axios.get(url).then((result) => {
             const data = result.data.products;
@@ -22,7 +23,7 @@ const MainPage = () => {
             <div id="banner">
                 <img src="images/banners/banner1.png" alt="banner" />
             </div>
-            <h1>판매되는 상품들</h1>
+            <h1 id="product-headline">판매되는 상품들</h1>
             <div id="product-list">
                 {products.map((product) => {
                     return (

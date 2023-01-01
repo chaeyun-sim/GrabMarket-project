@@ -38,6 +38,7 @@ html, body, #root, #root > div {
   height: 100vh;
   /* background-color: blue; */
   width: 1024px;
+  margin-top: 0;
   margin: 0 auto;
   padding-bottom: 24px;
   margin-top: 20px;

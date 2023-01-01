@@ -4,6 +4,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "./index.css"
+import { API_URL } from "../config/constants.js"
 
 dayjs.extend(relativeTime);  //확장 기능 호출
 
@@ -12,7 +13,7 @@ const ProductsPage = () => {
     const {id} = useParams();
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/products/${id}`)
+        axios.get(`${API_URL}/products/${id}`)
         .then((result) => { 
             setProduct(result.data.product)
         }).catch((err) => {
@@ -24,10 +25,12 @@ const ProductsPage = () => {
     if(product === null){
         return <h2 id="loading">상품 정보를 받고 있습니다....</h2>
     }
+
+    console.log('')
     return (
         <div>
             <div id="image-box">
-                <img src={'/' + product.imageUrl} alt="product" />
+                <img src={`${API_URL}/${product.imageUrl}`} alt="product" />
             </div>
             <div id="profile-box">
                 <img src="/images/icons/avatar.png" alt="avatar" />
@@ -41,11 +44,11 @@ const ProductsPage = () => {
                     {product.price}
                 </div>
                 <div id="createdAt">
-                    {dayjs(product.createdAt).fromNow()}
+                    {dayjs(product.createdAt).format('YYYY년 MM월 DD일')}
                 </div>
-                <div id="description">
+                <pre id="description">
                     {product.description}
-                </div>
+                </pre>
             </div>
         </div>
     );
