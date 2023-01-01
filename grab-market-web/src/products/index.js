@@ -1,15 +1,20 @@
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import axios from "axios";
-import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import "./index.css"
+
+dayjs.extend(relativeTime);  //확장 기능 호출
 
 const ProductsPage = () => {
     const [product, setProduct] = useState(null);
     const {id} = useParams();
+
     useEffect(() => {
-        axios.get(`https://85e74a4e-f796-49de-a926-6c2fce40e69d.mock.pstmn.io/products/${id}`)
+        axios.get(`http://localhost:8080/products/${id}`)
         .then((result) => { 
-            setProduct(result.data)
+            setProduct(result.data.product)
         }).catch((err) => {
             console.error(err)
         })
@@ -22,7 +27,7 @@ const ProductsPage = () => {
     return (
         <div>
             <div id="image-box">
-                <img src={product.imageUrl} alt="product" />
+                <img src={'/' + product.imageUrl} alt="product" />
             </div>
             <div id="profile-box">
                 <img src="/images/icons/avatar.png" alt="avatar" />
@@ -36,7 +41,7 @@ const ProductsPage = () => {
                     {product.price}
                 </div>
                 <div id="createdAt">
-                    2022-12-30
+                    {dayjs(product.createdAt).fromNow()}
                 </div>
                 <div id="description">
                     {product.description}

@@ -44,7 +44,6 @@
 .product-seller {
     display: flex;
     align-items: center;
-    margin-top: 3px;
     font-size: 14px;
     margin-left: 3px;
 }
@@ -69,4 +68,16 @@
   
 #banner > img {
     width: 100%;
+}
+
+.product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3px;
+}
+
+.product-date {
+    font-size: 12px;
+    color: rgb(136, 136, 136);
 }
