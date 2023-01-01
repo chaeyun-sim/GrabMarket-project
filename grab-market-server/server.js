@@ -1,13 +1,24 @@
 const express = require("express");
 const cors = require("cors");
-const models = require('./models');
+const models = require('./models')
 const { sequelize } = require("./models");
 const { DataTypes } = require("sequelize");
-const Product = require('./models/product')(sequelize, DataTypes)
+const multer = require('multer');
+const Product = require('./models/product')(sequelize, DataTypes);
 const app = express();
 const port = 8080;
 
 console.log(Product)
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/')
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    }
+  })
+});
 
 app.use(express.json());
 app.use(cors());
@@ -78,7 +89,15 @@ app.get('/products/:id', (req, res) => {
       console.error(error);
       res.send("상품 조회에 에러가 발생했습니다");
     });
-})
+});
+
+app.post('/image', upload.single('image'), (req, res) => {
+  const file = req.file;
+  console.log(file)
+  res.send({
+    imageUrl : file.path,
+  })
+});  // single 이미지파일 하나 보냈을 때 (key 필수)
 
 app.listen(port, () => {
    console.log("Server Connected to http://localhost:"+port);
