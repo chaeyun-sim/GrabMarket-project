@@ -40,7 +40,7 @@ const UploadPage = () => {
 
     return (
         <div id="upload-container">
-            <Form name="상품 업로드" onFinish={onSubmit}> 
+            <Form id="upload-product" name="상품 업로드" onFinish={onSubmit}> 
                 <Form.Item name="upload" label={
                     <div className="upload-label">상품 사진</div>
                 }>

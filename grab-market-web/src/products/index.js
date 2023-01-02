@@ -71,9 +71,9 @@ const ProductsPage = () => {
                 <div id="price">
                     {product.price}
                 </div>
-                <div id="createdAt">
+                {/* <div id="createdAt">
                     {dayjs(product.createdAt).format('YYYY년 MM월 DD일')}
-                </div>
+                </div> */}
                 <pre id="description">
                     {product.description}
                 </pre>

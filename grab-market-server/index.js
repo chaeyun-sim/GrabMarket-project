@@ -7,7 +7,7 @@ const multer = require('multer');
 const Product = require('./models/product')(sequelize, DataTypes);
 const Banner = require('./models/banner')(sequelize, DataTypes)
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 const upload = multer({
   storage: multer.diskStorage({

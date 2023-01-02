@@ -17,7 +17,7 @@ function App() {
             <Link to="/">
               <img src="/images/icons/logo.png" alt="logo" />
             </Link>
-            <Button size="large" onClick={() => {
+            <Button id="upload-button" size="large" onClick={() => {
               navigate('/upload')
             }} icon={<DownloadOutlined />}>상품 업로드</Button>
           </div>

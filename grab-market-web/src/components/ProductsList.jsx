@@ -14,7 +14,7 @@ const Products = (props) => {
     return (
         <div className='product-card' key={product.id}>
             {
-                product.soldout === 1 && <div className="product-blur"><h2>SOLD OUT</h2></div>
+                product.soldout === 1 && <div className="product-blur" />
             }
             <Link className="product-link" to={`/product/${product.id}`}>
                 <div>
@@ -23,6 +23,11 @@ const Products = (props) => {
                 <div className='product-contents'>
                     <span className='product-name'>
                         {product.name}
+                        <span>
+                            {
+                                product.soldout === 1 && <iframe src="https://giphy.com/embed/1rSPMeGA70UH4Uufxx" width="50" height="10" frameBorder="0" class="giphy-embed"></iframe>
+                            }
+                        </span>
                     </span>
                     <span className="product-price">
                         {product.price}원
@@ -32,9 +37,9 @@ const Products = (props) => {
                             <img className='product-avatar' src="images/icons/avatar.png" alt="avatar" />
                             <span>{product.seller}</span>
                         </div>
-                        <span className="product-date">
+                        {/* <span className="product-date">
                             {date}
-                        </span>
+                        </span> */}
                     </div>
                 </div>
             </Link>
