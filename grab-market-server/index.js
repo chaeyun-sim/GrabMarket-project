@@ -7,7 +7,6 @@ const multer = require('multer');
 const Product = require('./models/product')(sequelize, DataTypes);
 const Banner = require('./models/banner')(sequelize, DataTypes)
 const app = express();
-const port = process.env.PORT || 8080;
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -132,8 +131,8 @@ app.post("/purchase/:id", (req, res) => {
 });
 
 
-app.listen(port, () => {
-   console.log("Server Connected to http://localhost:"+port);
+app.listen(process.env.PORT || 8080, () => {
+   console.log("Server Connected to http://localhost:"+app.settings.env);
    models.sequelize.sync().then(() => {
     console.log('DB Connected')
    }).catch((err) => {
