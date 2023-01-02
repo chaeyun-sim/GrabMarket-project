@@ -5,10 +5,10 @@ const { sequelize } = require("./models");
 const { DataTypes } = require("sequelize");
 const multer = require('multer');
 const Product = require('./models/product')(sequelize, DataTypes);
+const Banner = require('./models/banner')(sequelize, DataTypes)
 const app = express();
 const port = 8080;
 
-console.log(Product)
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
@@ -25,7 +25,20 @@ app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
 app.get('/', (req, res) => {
-    res.send('Main Page')
+  res.send('Main Page')
+});
+
+app.get('/banners', (req, res) => {
+  Banner.findAll({
+    limit: 2
+  }).then((result) => {
+    res.send({
+      banners : result,
+    })
+  }).catch((err) => {
+    console.error(err);
+    res.status(500).send('에러가 발생했습니다.')
+  })
 })
 
 app.get("/products", (req, res) => {
@@ -41,9 +54,9 @@ app.get("/products", (req, res) => {
         'createdAt',
         'seller',
         "imageUrl",
+        "soldout",
       ],
     }).then((result) => {
-        console.log(result)
         res.send({
             products: result
         })
@@ -66,7 +79,6 @@ app.post("/products", (req, res) => {
       imageUrl,
     })
       .then((result) => {
-        console.log("상품 생성 결과 : ", result);
         res.send({
           result,
         });
@@ -83,7 +95,6 @@ app.get('/products/:id', (req, res) => {
         id: req.params.id,
       },
     }).then((result) => {
-      console.log("PRODUCT : ", result);
       res.send({
         product: result,
       });
@@ -99,6 +110,27 @@ app.post('/image', upload.single('image'), (req, res) => {
     imageUrl : req.file.path,
   })
 });  // single 이미지파일 하나 보냈을 때 (key 필수)
+
+app.post("/purchase/:id", (req, res) => {
+  const { id } = req.params;
+  Product.update(
+    {
+      soldout: 1,
+    },
+    {
+      where: {
+        id,
+      },
+    }).then((result) => {
+      res.send({
+        result: true,
+      });
+    }).catch((error) => {
+      console.error(error);
+      res.status(500).send("에러가 발생했습니다.");
+    });
+});
+
 
 app.listen(port, () => {
    console.log("Server Connected to http://localhost:"+port);

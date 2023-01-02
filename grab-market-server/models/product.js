@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
         imageUrl: {
             type: DataTypes.STRING(300),
             allowNull: true
+        },
+        soldout: {
+            type: DataTypes.INTEGER(1),
+            allowNullL: false,
+            defaultValue: 0,
         }
     });
     return product;
