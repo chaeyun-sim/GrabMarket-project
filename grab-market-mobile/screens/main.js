@@ -1,12 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import {useEffect, useState} from "react";
-import { Image, StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import axios from "axios";
+import { Image, StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, Alert, SafeAreaView, Touchable } from 'react-native';
+
 import Avatar from '../assets/icons/avatar.png';
 import {API_URL} from '../config/constants';
-import axios from "axios";
-import React from 'react';
 import Carousel from "react-native-snap-carousel";
-// import Carousel from "react-native-walkthrough-carousel";
+
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import 'dayjs/locale/ko'
@@ -14,14 +13,14 @@ import 'dayjs/locale/ko'
 dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
-export default function MainScreen() {
+export default function MainScreen(props) {
   const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
 
   useEffect(() => {
     axios.get(`${API_URL}/products`).then((result) => {
       // console.log(result);clear
-      console.log(result)
+      // console.log(result)
       setProducts(result.data.products);
     }).catch((err) => {
       console.error(err)
@@ -65,29 +64,34 @@ export default function MainScreen() {
           <View style={styles.productList}>
           {
             products.map((items, index) => {
-              console.log(items)
               return (
-                <View style={styles.productCard} key={index}>
-                  {
-                    items.soldout === 1 && <View style={styles.productBlur} />
-                  }
-                  <View>
-                    <Image source={{
-                      uri: `${API_URL}/${items.imageUrl}`
-                    }} style={styles.productImage} resizeMode={"contain"} />
-                  </View>
-                  <View style={styles.productContents}>
-                    <Text style={styles.productName}>{items.name}</Text>
-                    <Text style={styles.productPrice}>{items.price}원</Text>
-                    <View style={styles.productFooter}>
-                      <View style={styles.productSeller}>
-                        <Image style={styles.productAvatar} source={Avatar} />
-                        <Text style={styles.productSellerName}>{items.seller}</Text>
+                <TouchableOpacity onPress={ () => {
+                  props.navigation.navigate("Product", {
+                    id: items.id,
+                  })
+                }} key={index}>
+                  <View style={styles.productCard} key={index}>
+                    {
+                      items.soldout === 1 && <View style={styles.productBlur} />
+                    }
+                    <View>
+                      <Image source={{
+                        uri: `${API_URL}/${items.imageUrl}`
+                      }} style={styles.productImage} resizeMode={"contain"} />
+                    </View>
+                    <View style={styles.productContents}>
+                      <Text style={styles.productName}>{items.name}</Text>
+                      <Text style={styles.productPrice}>{items.price}원</Text>
+                      <View style={styles.productFooter}>
+                        <View style={styles.productSeller}>
+                          <Image style={styles.productAvatar} source={Avatar} />
+                          <Text style={styles.productSellerName}>{items.seller}</Text>
+                        </View>
+                        <Text style={styles.productDate}>{dayjs(items.createdAt).fromNow()}</Text>
                       </View>
-                      <Text style={styles.productDate}>{dayjs(items.createdAt).fromNow()}</Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               )
             })
           }
@@ -149,6 +153,8 @@ const styles = StyleSheet.create({
   },
   productList : {
     alignItems: 'center',
+    marginLeft: 16,
+    marginRight: 16,
   },
   headline: {
     fontSize: 24,
@@ -167,6 +173,7 @@ const styles = StyleSheet.create({
   bannerImage : {
     width: '100%',
     height: 200,
+    margin: 0,
   },
   safeAreaView: {
     flex: 1,
