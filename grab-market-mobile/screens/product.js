@@ -4,20 +4,29 @@ import { ActivityIndicator, Text, ScrollView, StyleSheet, Image, View, Alert, To
 import { API_URL } from "../config/constants";
 import Avatar from "../assets/icons/avatar.png"
 import dayjs from "dayjs";
+import ProductCard from "../components/productCard";
 
 export default function ProductScreen(props){
     const {id} = props.route.params;
     const [products, setProducts] = useState(null);
+    const [productList, setProductList] = useState([]);
     // console.log(id)
 
     useEffect(() => {
         axios.get(`${API_URL}/products/${id}`).then((result) => {
-            console.log('Result', result.data)
+            // console.log('Result', result.data.product)
             setProducts(result.data.product);
         }).catch((err) => {
             console.error(err);
+        });
+
+        axios.get(`${API_URL}/products/${id}/recommendation`).then((result) => {
+            // console.log("product list : ", result.data.products)
+            setProductList(result.data.products)
+        }).catch((err) => {
+            console.error(err);
         })
-    }, []);
+    }, [id]);
 
     const onPressButton = () => {
         if (!products.soldout){
@@ -52,6 +61,17 @@ export default function ProductScreen(props){
                         <Text style={styles.productName}>{products.name}</Text>
                         <Text style={styles.productPrice}>{products.price}</Text>
                         <Text style={styles.productDesc}>{products.description}</Text>
+                    </View>
+                    <View style={styles.divider} />
+                    <Text style={styles.recommendationHeader}>추천 상품</Text>
+                    <View style={styles.recommendation}>
+                        {
+                            productList.map((product, index) => {
+                                return (
+                                    <ProductCard items={product} key={index} navigation={props.navigation}/>
+                                )
+                            })
+                        }
                     </View>
                 </View>
             </ScrollView>
@@ -106,6 +126,7 @@ const styles = StyleSheet.create({
     productDesc : {
         marginTop: 16,
         fontSize: 17,
+        marginBottom: 32,
     },
     purchaseButton: {
         position: 'absolute',
@@ -142,5 +163,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 3,
+    },
+    recommendation: {
+        alignItems: 'center',
+        marginTop: 16,
+        paddingBottom: 70,
+        // width: '80%'
+    },
+    recommendationHeader : {
+        fontSize: 30,
     }
 })
