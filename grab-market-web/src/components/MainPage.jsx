@@ -35,7 +35,7 @@ const MainPage = () => {
                 {
                     banners.map((banner, index) => {
                         return (
-                            <Link to={banner.href}>
+                            <Link to={banner.href}  key={index}>
                                 <div id="banner">
                                     <img src={`${API_URL}/${banner.imageUrl}`} alt="banner" />
                                 </div>

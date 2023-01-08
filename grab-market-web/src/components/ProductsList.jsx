@@ -16,7 +16,7 @@ const Products = (props) => {
             {
                 product.soldout === 1 && <div className="product-blur" />
             }
-            <Link className="product-link" to={`/product/${product.id}`}>
+            <Link className="product-link" to={`/products/${product.id}`}>
                 <div>
                     <img className="product-img" src={`${API_URL}/${product.imageUrl}`} alt={product.name} />
                 </div>

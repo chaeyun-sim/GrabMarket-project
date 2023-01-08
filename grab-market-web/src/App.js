@@ -24,10 +24,10 @@ function App() {
       </div>
       <hr></hr>
       <div id="body">
-        <Routes exact={true} path="/">
-          <Route path="/" element={<MainPage />} />
-          <Route path="/product/:id" element={<ProductsPage />} />
-          <Route path="/upload" element={<UploadPage />} />
+        <Routes>
+          <Route exact={true} path="/" element={<MainPage />} />
+          <Route exact={true} path="/products/:id" element={<ProductsPage />} />
+          <Route exact={true} path="/upload" element={<UploadPage />} />
         </Routes>
       </div>
       <div id="footer">

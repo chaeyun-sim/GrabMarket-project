@@ -6,7 +6,7 @@
     display: flex;
     flex-wrap: wrap;  /*줄바꿈*/
     margin-top: 12px;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 
 .product-card {

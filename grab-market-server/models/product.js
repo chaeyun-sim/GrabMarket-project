@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER(1),
             allowNullL: false,
             defaultValue: 0,
+        },
+        type: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
         }
     });
     return product;
