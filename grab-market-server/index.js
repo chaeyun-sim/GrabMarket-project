@@ -147,10 +147,31 @@ app.get("/products/:id/recommendation", (req, res) => {
         type : product.type,
         id: {
           [models.Sequelize.Op.ne] : req.params.id   //이와 일치하지 않ㅡ
-        }
+        },
+        // soldout: 0,
       }
     }).then((products) => {
       res.send({products});
+    }).catch((err) => {
+        res.status(500).send("에러가 발생했습니다.");
+    })
+  })
+});
+
+app.get("/products/:id/seller", (req, res) => {
+  Product.findOne({
+    where: {
+      id: req.params.id
+    }
+  }).then((product) => {
+    console.log(product);
+    Product.findAll({
+      where: {
+        seller: product.seller
+      }
+    }).then((products) => {
+      res.send({products});
+      console.log(products)
     }).catch((err) => {
         res.status(500).send("에러가 발생했습니다.");
     })

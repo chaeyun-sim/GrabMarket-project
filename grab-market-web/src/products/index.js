@@ -6,11 +6,15 @@ import { Button, message } from "antd";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "./index.css"
 import { API_URL } from "../config/constants.js"
+import Products from "../components/ProductsList";
 
 dayjs.extend(relativeTime);  //확장 기능 호출
 
 const ProductsPage = () => {
     const [product, setProduct] = useState(null);
+    const [recommendedProducts, setRecommendedProducts] = useState([]);
+    const [sellersProduct, setSellersProduct] = useState([]);
+
     const {id} = useParams();
     const navigate = useNavigate();
 
@@ -18,14 +22,33 @@ const ProductsPage = () => {
         axios.get(`${API_URL}/products/${id}`)
         .then((result) => { 
             setProduct(result.data.product)
+            console.log(result.data.product)
         }).catch((err) => {
             console.error(err)
         })
     };
 
+    const getRecommendation = () => {
+        axios.get(`${API_URL}/products/${id}/recommendation`).then((result) => {
+            setRecommendedProducts(result.data.products);
+        }).catch((err) => {
+            console.error(err);
+        })
+    };
+
+    const getSeller = () => {
+        axios.get(`${API_URL}/products/${id}/seller`).then((result) => {
+            setSellersProduct(result.data.products)
+        }).catch((err) => {
+            console.error(err);
+        })
+    }
+
     useEffect(() => {
         getProduct();
-    }, []);
+        getRecommendation();
+        getSeller();
+    }, [id]);
 
     if(product === null){
         return <h2 id="loading">상품 정보를 받고 있습니다....</h2>
@@ -74,9 +97,34 @@ const ProductsPage = () => {
                 {/* <div id="createdAt">
                     {dayjs(product.createdAt).format('YYYY년 MM월 DD일')}
                 </div> */}
-                <pre id="description">
-                    {product.description}
-                </pre>
+                <div id="description-box">
+                    <pre id="description">{product.description}</pre>
+                </div>
+                <div>
+                    <h1 style={{ marginBottom: 10 }}>추천 상품</h1>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {
+                        recommendedProducts.map((product, index) => {
+                            return (
+                                    <Products key={product.id} items={product} />
+                               
+                            )
+                        })
+                    }
+                    </div>
+                </div>
+                <div style={{ marginTop: 25 }}>
+                    <h1 style={{ marginBottom: 10 }}>같은 판매자의 상품</h1>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {
+                        sellersProduct.map((product, index) => {
+                            return (
+                                    <Products key={product.id} items={product} />
+                            )
+                        })
+                    }
+                    </div>
+                </div>
             </div>
         </div>
     );
